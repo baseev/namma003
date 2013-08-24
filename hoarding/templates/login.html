@@ -1,0 +1,126 @@
+{% extends "header.html" %}
+{% block login %}
+<script type="text/javascript">
+	$('#myTab a').click(function(e) {
+		e.preventDefault();
+		$(this).tab('show');
+	}); 
+</script>
+</head>
+<div class="tabbable">
+	<ul class="nav nav-tabs" id="myTab">
+		<li class="active">
+			<a href="#Login" data-toggle="tab"><i class="icon-user"></i> Login</a>
+		</li>
+		<li>
+			<a href="#Register" data-toggle="tab"><i class="icon-pencil"></i> Register</a>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active span7 offset2" id="Login">
+			<form action="" method="post" class="form well">
+				<fieldset>
+					<legend>
+						Existing Users Login
+					</legend>
+					{% csrf_token %}
+					{% if form.username.errors %}
+					<div class="alert alert-error">
+						<button type="button" class="close" data-dismiss="alert">
+							&times;
+						</button>
+						{{ form.username.errors|striptags }}
+					</div>
+					{% endif %}
+
+					<label for="username">Username</label>
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-user"></i></span>
+						<input id="id_username" name="username" type="text" class="span6" />
+					</div>
+					{% if form.password.errors %}
+					<div class="alert alert-error">
+						<button type="button" class="close" data-dismiss="alert">
+							&times;
+						</button>
+						{{ form.password.errors|striptags }}
+					</div>
+					{% endif %}
+
+					<label>Password :</label>
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-lock"></i></span>
+						<input id="id_password" name="password" type="password" class="span6" />
+					</div>
+					<input type="submit" value="submit" name="submit" class="btn btn-inverse" />
+					&nbsp;
+					<input type="reset" value="reset" name="reset" class="btn btn-inverse" />
+					<div class="clear"></div>
+					<div align="right">
+						Forgot password? <a href="#">Click here to reset</a>
+					</div>
+					<div class="clear"></div>
+				</fieldset>
+			</form>
+		</div>
+		<div class="tab-pane fade in span7 offset2" id="Register">
+			<form action="" method="post">
+				{% csrf_token %}
+				{% if form.username.errors %}
+				<div>
+					{{ form.username.errors }}
+				</div>
+				{% endif %}
+				<div>
+					<label>User Name :</label>
+					{{ form.username }}
+				</div>
+
+				{% if form.email.errors %}
+				<div>
+					{{ form.email.errors }}
+				</div>
+				{% endif %}
+				<div>
+					<label>Email :</label>
+					{{ form.email }}
+				</div>
+
+				{% if form.user_type.errors %}
+				<div>
+					{{ form.user_type.errors }}
+				</div>
+				{% endif %}
+				<div>
+					<label>Type :</label>
+					{{ form.user_type }}
+				</div>
+
+				{% if form.password.errors %}
+				<div>
+					{{ form.password.errors }}
+				</div>
+				{% endif %}
+				<div>
+					<label>Password :</label>
+					{{ form.password }}
+				</div>
+
+				{% if form.password1.errors %}
+				<div>
+					{{ form.password1.errors }}
+				</div>
+				{% endif %}
+				<div>
+					<label>Verify Password :</label>
+					{{ form.password1 }}
+				</div>
+				<input type="submit" value="submit" name="submit"/>
+				<input type="reset" value="reset" name="reset"/>
+			</form>
+		</div>
+	</div>
+
+</div>
+</div>
+{% endblock %}

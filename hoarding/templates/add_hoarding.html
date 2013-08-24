@@ -1,0 +1,136 @@
+<script type="text/javascript" src="http://j.maxmind.com/app/geoip.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.0/jquery.js"></script>
+
+
+<script>
+	/*
+	
+	var map;
+	var myLatlng;
+	function initialize() {
+		myLatlng =  new google.maps.LatLng(lat_, long_);
+		var mapOptions = {
+			zoom: 15,
+			center: myLatlng,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);	 
+		var marker = new google.maps.Marker(
+							{ position: myLatlng, title:"Hello World!"}
+						);
+
+		marker.setMap(map);
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);	
+	*/
+	
+	
+	var map;
+	var markersArray = [];
+	var lat_ = geoip_latitude();
+	var long_ = geoip_longitude();
+	
+	function initialize() {
+	  var haightAshbury = new google.maps.LatLng(lat_, long_);
+	  var mapOptions = {
+		zoom: 12,
+		center: haightAshbury,
+		mapTypeId: google.maps.MapTypeId.TERRAIN
+	  };
+	  map =  new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+	  google.maps.event.addListener(map, 'click', function(event) {
+		addMarker(event.latLng);
+	  });
+	}
+
+	function addMarker(location) {
+	  deleteOverlays();
+	  marker = new google.maps.Marker({
+		position: location,
+		map: map
+	  });
+	  markersArray.push(marker);
+	  getAddress(location);
+	}
+
+	// Removes the overlays from the map, but keeps them in the array
+	function clearOverlays() {
+	  if (markersArray) {
+		for (i in markersArray) {
+		  markersArray[i].setMap(null);
+		}
+	  }
+	}
+
+	// Shows any overlays currently in the array
+	function showOverlays() {
+	  if (markersArray) {
+		for (i in markersArray) {
+		  markersArray[i].setMap(map);
+		}
+	  }
+	}
+
+	// Deletes all markers in the array by removing references to them
+	function deleteOverlays() {
+	  if (markersArray) {
+		for (i in markersArray) {
+		  markersArray[i].setMap(null);
+		}
+		markersArray.length = 0;
+	  }
+	}
+
+	
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+	
+	function getAddress(latLng) {
+		var geocoder = new google.maps.Geocoder();
+		geocoder.geocode( {'latLng': latLng},
+			  function(results, status) {
+				if(status == google.maps.GeocoderStatus.OK) {
+				  if(results[0]) {
+					$('#id_area_particulars').val(results[0].formatted_address);
+					$('#id_latitude').val(latLng.lat());
+	  				$('#id_longitude').val(latLng.lng());
+					/*
+					for (j in results) {
+						console.log(results[j]);
+					}
+					*/
+				  }
+				  else {
+					//document.getElementById("address").value = "No results";
+				  }
+				}
+				else {
+				  //document.getElementById("address").value = status;
+				}
+			  });
+	}
+
+</script>
+
+<style>
+  html, body, #map-canvas {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+</style>
+ 
+ 
+<div id="map-canvas"></div>
+
+ 
+<form action="" method="post">
+{% csrf_token %}
+{{ form }}
+<input type="submit" value="submit" name="submit"/>
+<input type="reset" value="reset" name="reset"/>
+</form>

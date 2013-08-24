@@ -1,0 +1,11 @@
+<p>
+	Name = {{ profile.user_type.slug }}
+	Name = {{ profile.user.username }}
+	
+	
+	{% for hoarding in hoardings %}
+		<br/>
+		{{hoarding.town}}, {{hoarding.area_particulars}}
+	{% endfor %}
+	
+</p>
